@@ -1,0 +1,197 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table entities.user {
+  username varchar [primary key]
+  email varchar [unique]
+  password varchar
+  role varchar
+  registration_date timestamp
+  checks {
+    `role in (Admin, Verified User, Not Verified User)` [name: 'chk_user_role']
+  }
+  indexes {
+    username
+    email
+    role
+  }
+}
+
+Table entities.person {
+  person_id integer [increment, primary key]
+  first_name varchar
+  middle_name varchar
+  last_name varchar
+  birth_date date
+  sex varchar [note: 'M/F/N']
+  tax_id varchar [unique]
+  username varchar [unique, not null, ref: - entities.user.username]
+  registration_date timestamp
+  checks {
+    `sex IN (M,F,N)` [name: 'chk_gender_values']
+  }
+  indexes {
+    username
+    tax_id
+  }
+}
+
+Table entities.company {
+  company_id integer [increment, primary key]
+  company_name varchar
+  contact_person_id integer [not null, ref: - entities.person.person_id]
+  tax_id varchar [unique, not null]
+  username varchar [unique, not null, ref: - entities.user.username]
+  registration_date timestamp
+  indexes {
+    username
+    tax_id
+  }
+}
+
+Table entities.client {
+  client_id integer [increment, primary key]
+  entity_type varchar [note: 'Legal entity/Person']
+  company_id integer [ref: - entities.company.company_id]
+  person_id integer [ref: - entities.person.person_id]
+  registration_date timestamp
+  checks {
+    `company_id AND person_id is not null` [name: 'chk_entity_exists']
+  }
+  indexes {
+    entity_type
+    company_id
+    person_id
+  }
+}
+
+Table vehicles.vehicle_catalog {
+  catalog_id integer [increment, primary key]
+  vehicle_type varchar [note: 'Car/Motorcycle']
+  brand_name varchar
+  model_name varchar
+  model_year integer
+  indexes {
+    brand_name
+    model_name
+    (vehicle_type,brand_name)
+  }
+}
+
+Table vehicles.user_vehicles {
+  vehicle_id integer [increment, primary key]
+  client_id integer [not null, ref: > entities.client.client_id]
+  catalog_id integer [not null, ref: - vehicles.vehicle_catalog.catalog_id]
+  license_plate varchar [not null]
+  color varchar [not null]
+  notes varchar
+  Registration_date timestamp
+  indexes {
+    (client_id,catalog_id,license_plate) [unique]
+    client_id
+  }
+}
+
+Table entities.profession {
+  profession_id integer [increment, primary key]
+  profession_name varchar
+  description varchar
+}
+
+Table entities.skill   {
+  skill_id integer [increment, primary key]
+  skill_name varchar
+}
+
+Table entities.service_provider {
+  provider_id integer [increment, primary key]
+  profession_id integer [not null, ref: > entities.profession.profession_id]
+  indexes {
+    profession_id
+  }
+}
+
+Table entities.spesialist_skill {
+  spesialist_id integer
+  skill_id integer
+  indexes {
+    (spesialist_id, skill_id) [pk] // composite primary key
+    }
+}
+
+Table requests.request_status_def {
+  request_status_id integer [primary key]
+  request_status_name varchar
+  // statuses: quoted/quoteAcceptedByClient/providerOnTheirWay/Completed/Cancelled
+}
+
+Table requests.service_requests {
+  request_id integer [increment, primary key]
+  client_id integer [not null, ref: > entities.client.client_id]
+  vehicle_id integer [not null, ref: > vehicles.user_vehicles.vehicle_id]
+  specialist_id integer [not null, ref: < entities.service_provider.provider_id]
+  request_status_id integer [not null, ref: - requests.request_status_def.request_status_id]
+  requested_at timestamp
+  accepted_at timestamp
+  completed_at timestamp
+  // payment_id integer [ref: - payment.payment_id]
+  indexes {
+    client_id
+    specialist_id
+    request_status_id
+    // payment_id
+  }
+}
+
+Table requests.review_scale_def {
+  review_scale_id integer [primary key]
+  description varchar
+}
+
+Table requests.review {
+  review_id integer [increment, primary key]
+  order_id interger [not null, ref: - requests.service_requests.request_id]
+  review_scale_id integer [not null, ref: - requests.review_scale_def.review_scale_id]
+  indexes {
+    order_id
+    review_scale_id
+    }
+  }
+/* =========================================
+   PHASE 2: PAYMENTS & INVOICES (DEFERRED)
+   =========================================
+
+Table payment {
+  payment_id integer [increment, primary key]
+  payment_state integer [not null, ref: - payment_state_def.payment_state_id]
+  payment_way integer [not null, ref: - payment_way_def.payment_way_id]
+  due_date timestamp [not null]
+  updated_on timestamp [not null]
+  indexes {
+    payment_state
+    payment_way
+    due_date
+  }
+}
+
+Table payment_state_def {
+  payment_state_id integer [primary key]
+  payment_state_name varchar
+}
+
+Table payment_way_def {
+  payment_way_id integer [primary key]
+  payment_way_name varchar
+}
+
+Table invoice {
+  invoice_id integer [increment, primary key]
+  payment_id integer [not null, ref: -payment.payment_id]
+  print_date date
+  indexes {
+    payment_id
+    print_date
+  }
+}
+
+*/
