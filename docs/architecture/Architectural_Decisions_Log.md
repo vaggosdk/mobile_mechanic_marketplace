@@ -14,6 +14,10 @@ To achieve the primary goal of building a robust, backend-first MVP, the followi
 * **Database Migration & Versioning:** Liquibase
 * **Local Development Environment:** Containerized via Docker / Docker Compose
 
+### Design & Modeling Tools
+* **Database Design Tool:** [dbdiagram.io](https://dbdiagram.io)
+  * **Interactive ERD Link:** [Live Database Schema Diagram](https://dbdiagram.io/d/Mechanic-app-6a1e734c2eeb2f46cd3bb67b)
+  * *Note: The source DBML (Database Markup Language) file is tracked locally in this repository under `docs/architecture/DB_Schema_Design.dbml`. The live diagram link above provides a read-only visual representation of the relationships. Any structural database changes should be modeled there, exported to the local DBML file, and then translated into a Liquibase migration script.*
 ---
 
 # Architecture Decision Records (ADRs)
