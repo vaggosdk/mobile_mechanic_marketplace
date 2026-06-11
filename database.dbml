@@ -52,8 +52,8 @@ Table entities.company {
 Table entities.client {
   client_id integer [increment, primary key]
   entity_type varchar [note: 'Legal entity/Person']
-  company_id integer [ref: - entities.company.company_id]
   person_id integer [ref: - entities.person.person_id]
+  company_id integer [ref: - entities.company.company_id]
   registration_date timestamp
   checks {
     `company_id AND person_id is not null` [name: 'chk_entity_exists']
@@ -105,7 +105,10 @@ Table entities.skill   {
 
 Table entities.service_provider {
   provider_id integer [increment, primary key]
+  skill_id integer
   profession_id integer [not null, ref: > entities.profession.profession_id]
+  service_base_location geometry
+  service_radius_meters integer
   indexes {
     profession_id
   }
@@ -119,21 +122,27 @@ Table entities.spesialist_skill {
     }
 }
 
+//Composite foreign key
+Ref: entities.service_provider.(provider_id,skill_id) - entities.spesialist_skill.(spesialist_id,skill_id)
+
 Table requests.request_status_def {
   request_status_id integer [primary key]
-  request_status_name varchar
-  // statuses: quoted/quoteAcceptedByClient/providerOnTheirWay/Completed/Cancelled
+  request_status_name varchar [not null, note: 'Pending, Accepted, Completed, Cancelled, Expired']
+  // possible extra statuses: quoted/quoteAcceptedByClient/providerOnTheirWay/Completed/Cancelled
 }
 
 Table requests.service_requests {
   request_id integer [increment, primary key]
   client_id integer [not null, ref: > entities.client.client_id]
   vehicle_id integer [not null, ref: > vehicles.user_vehicles.vehicle_id]
-  specialist_id integer [not null, ref: < entities.service_provider.provider_id]
+  // This enforces 1 mechanic per request. It is nullable because
+  // when a client first sends a request, no mechanic has accepted it yet.
+  specialist_id integer [ref: > entities.service_provider.provider_id]
   request_status_id integer [not null, ref: - requests.request_status_def.request_status_id]
   requested_at timestamp
   accepted_at timestamp
   completed_at timestamp
+  incident_location geometry
   // payment_id integer [ref: - payment.payment_id]
   indexes {
     client_id
@@ -157,6 +166,30 @@ Table requests.review {
     review_scale_id
     }
   }
+
+  // All media (photos, videos, PDFs) for a request go here
+Table requests.request_attachments {
+  attachment_id integer [increment, primary key]
+  request_id integer [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple attachments per request']
+  file_url varchar [not null, note: 'S3/Cloud storage path']
+  attachment_type varchar [not null, note: 'image, video, or document']
+  uploaded_at timestamp [default: `now()`]
+
+  indexes {
+    request_id
+  }
+}
+
+// All OBD fault codes submitted for a request go here
+Table requests.request_obd_codes {
+  id integer [increment, primary key]
+  request_id integer [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple OBD codes per request']
+  obd_code varchar [not null, note: 'e.g., P0420, P0301']
+
+  indexes {
+    request_id
+  }
+}
 /* =========================================
    PHASE 2: PAYMENTS & INVOICES (DEFERRED)
    =========================================
