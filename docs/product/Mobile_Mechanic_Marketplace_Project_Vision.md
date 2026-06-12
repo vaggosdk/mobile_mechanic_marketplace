@@ -52,13 +52,12 @@ Can:
 
 - Register multiple vehicles
 - Register vehicles permanently
-- Register vehicles ad-hoc for one-time use
+- Register vehicles ad-hoc for one-time use, having the option to save it permanently
 - Request services for another person's vehicle
 - Upload photos/videos before mechanic arrival
 - Share diagnostic information
 - View mechanic profile
-- Rate a service provider
-- Write a review for a service provider
+- Rate or write a review for a service provider
 - View ratings and reviews
 - Receive quotes/estimates
 - Track request status
