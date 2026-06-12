@@ -75,9 +75,9 @@ Can:
 - Define brand expertise
 - Define special skills
 - Accept/reject jobs
-- Submit diagnosis reports
-- Create quotes/estimates
+- Submit diagnosis reports & create quotes/estimates for client approval
 - Request workshop transfer
+- Access Safety Center / Trigger Panic Button during active service sessions
 
 ---
 
