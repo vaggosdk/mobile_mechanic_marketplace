@@ -57,6 +57,8 @@ Can:
 - Upload photos/videos before mechanic arrival
 - Share diagnostic information
 - View mechanic profile
+- Rate a service provider
+- Write a review for a service provider
 - View ratings and reviews
 - Receive quotes/estimates
 - Track request status
