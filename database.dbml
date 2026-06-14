@@ -2,9 +2,10 @@
 // Docs: https://dbml.dbdiagram.io/docs
 
 Table entities.user {
-  username varchar [primary key]
+  user_id bigint [primary key]
+  username varchar [unique] //we don't do this pk, so the user is able to change it
   email varchar [unique]
-  password varchar
+  password varchar //this would be a hashed string
   role varchar
   registration_date timestamp
   checks {
@@ -25,13 +26,13 @@ Table entities.person {
   birth_date date
   sex varchar [note: 'M/F/N']
   tax_id varchar [unique]
-  username varchar [unique, not null, ref: - entities.user.username]
+  user_id varchar [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp
   checks {
     `sex IN (M,F,N)` [name: 'chk_gender_values']
   }
   indexes {
-    username
+    user_id
     tax_id
   }
 }
@@ -41,10 +42,10 @@ Table entities.company {
   company_name varchar
   contact_person_id integer [not null, ref: - entities.person.person_id]
   tax_id varchar [unique, not null]
-  username varchar [unique, not null, ref: - entities.user.username]
+  user_id varchar [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp
   indexes {
-    username
+    user_id
     tax_id
   }
 }
@@ -56,7 +57,7 @@ Table entities.client {
   company_id integer [ref: - entities.company.company_id]
   registration_date timestamp
   checks {
-    `(person_id IS NOT NULL AND company_id IS NULL) OR (company_id IS NOT NULL AND person_id IS NULL)` [name: 'chk_entity_exists']
+    `(person_id IS NOT NULL AND company_id IS NULL) OR (company_id IS NOT NULL AND person_id IS NULL)` [name: 'chk_entity_exists_client']
   }
   indexes {
     entity_type
@@ -105,25 +106,29 @@ Table entities.skill   {
 
 Table entities.service_provider {
   provider_id integer [increment, primary key]
-  skill_id integer
+  person_id integer [ref: - entities.person.person_id]
+  company_id integer [ref: - entities.company.company_id]
   profession_id integer [not null, ref: > entities.profession.profession_id]
   service_base_location geometry
   service_radius_meters integer
   indexes {
     profession_id
   }
+  checks {
+    `(person_id IS NOT NULL AND company_id IS NULL) OR (company_id IS NOT NULL AND person_id IS NULL)` [name: 'chk_entity_exists_provider']
+  }
 }
 
-Table entities.spesialist_skill {
-  spesialist_id integer
-  skill_id integer
+Table entities.provider_skill {
+  provider_id integer [ref: > entities.service_provider.provider_id]
+  skill_id integer [ref: > entities.skill.skill_id]
   indexes {
-    (spesialist_id, skill_id) [pk] // composite primary key
+    (provider_id, skill_id) [pk] // composite primary key
     }
 }
 
 //Composite foreign key
-Ref: entities.service_provider.(provider_id,skill_id) - entities.spesialist_skill.(spesialist_id,skill_id)
+// Ref: entities.service_provider.(provider_id,skill_id) - entities.spesialist_skill.(spesialist_id,skill_id)
 
 Table requests.request_status_def {
   request_status_id integer [primary key]
@@ -190,6 +195,21 @@ Table requests.request_obd_codes {
     request_id
   }
 }
+
+Table requests.vehicle_symptoms {
+  // CHECK_ENGINE_LIGHT; STRANGE_NOISE; BATTERY_ISSUE
+  // FLAT_TIRE; NO_START; OVERHEATING; BRAKE_PROBLEM
+  // OIL_LEAK; EXCESSIVE_SMOKE; OTHER
+  symptom_code varchar
+  symptom_desc varchar
+  request_id integer [not null, ref: > requests.service_requests.request_id]
+indexes {
+      (symptom_code, request_id) [pk] // composite primary key
+    }
+}
+
+//QUOTE/ESTIMATES TABLE TBD
+
 /* =========================================
    PHASE 2: PAYMENTS & INVOICES (DEFERRED)
    =========================================
