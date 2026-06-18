@@ -19,14 +19,14 @@ Table entities.user {
 }
 
 Table entities.person {
-  person_id integer [increment, primary key]
+  person_id bigint [increment, primary key]
   first_name varchar
   middle_name varchar
   last_name varchar
   birth_date date
   sex varchar [note: 'M/F/N']
   tax_id varchar [unique]
-  user_id varchar [unique, not null, ref: - entities.user.user_id]
+  user_id bigint [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp
   checks {
     `sex IN (M,F,N)` [name: 'chk_gender_values']
@@ -38,11 +38,11 @@ Table entities.person {
 }
 
 Table entities.company {
-  company_id integer [increment, primary key]
+  company_id bigint [increment, primary key]
   company_name varchar
-  contact_person_id integer [not null, ref: - entities.person.person_id]
+  contact_person_id bigint [not null, ref: - entities.person.person_id]
   tax_id varchar [unique, not null]
-  user_id varchar [unique, not null, ref: - entities.user.user_id]
+  user_id bigint [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp
   indexes {
     user_id
@@ -51,10 +51,10 @@ Table entities.company {
 }
 
 Table entities.client {
-  client_id integer [increment, primary key]
+  client_id bigint [increment, primary key]
   entity_type varchar [note: 'Legal entity/Person']
-  person_id integer [ref: - entities.person.person_id]
-  company_id integer [ref: - entities.company.company_id]
+  person_id bigint [ref: - entities.person.person_id]
+  company_id bigint [ref: - entities.company.company_id]
   registration_date timestamp
   checks {
     `(person_id IS NOT NULL AND company_id IS NULL) OR (company_id IS NOT NULL AND person_id IS NULL)` [name: 'chk_entity_exists_client']
@@ -80,8 +80,8 @@ Table vehicles.vehicle_catalog {
 }
 
 Table vehicles.user_vehicles {
-  vehicle_id integer [increment, primary key]
-  client_id integer [not null, ref: > entities.client.client_id]
+  vehicle_id bigint [increment, primary key]
+  client_id bigint [not null, ref: > entities.client.client_id]
   catalog_id integer [not null, ref: - vehicles.vehicle_catalog.catalog_id]
   license_plate varchar [not null]
   color varchar [not null]
@@ -105,9 +105,9 @@ Table entities.skill   {
 }
 
 Table entities.service_provider {
-  provider_id integer [increment, primary key]
-  person_id integer [ref: - entities.person.person_id]
-  company_id integer [ref: - entities.company.company_id]
+  provider_id bigint [increment, primary key]
+  person_id bigint [ref: - entities.person.person_id]
+  company_id bigint [ref: - entities.company.company_id]
   profession_id integer [not null, ref: > entities.profession.profession_id]
   service_base_location geometry
   service_radius_meters integer
@@ -120,7 +120,7 @@ Table entities.service_provider {
 }
 
 Table entities.provider_skill {
-  provider_id integer [ref: > entities.service_provider.provider_id]
+  provider_id bigint [ref: > entities.service_provider.provider_id]
   skill_id integer [ref: > entities.skill.skill_id]
   indexes {
     (provider_id, skill_id) [pk] // composite primary key
@@ -131,27 +131,27 @@ Table entities.provider_skill {
 // Ref: entities.service_provider.(provider_id,skill_id) - entities.spesialist_skill.(spesialist_id,skill_id)
 
 Table requests.request_status_def {
-  request_status_id integer [primary key]
+  request_status_id bigint [primary key]
   request_status_name varchar [not null, note: 'Pending, Accepted, Completed, Cancelled, Expired']
   // possible extra statuses: quoted/quoteAcceptedByClient/providerOnTheirWay/Completed/Cancelled
 }
 
 Table requests.service_requests {
-  request_id integer [increment, primary key]
-  client_id integer [not null, ref: > entities.client.client_id]
-  vehicle_id integer [not null, ref: > vehicles.user_vehicles.vehicle_id]
+  request_id bigint [increment, primary key]
+  client_id bigint [not null, ref: > entities.client.client_id]
+  vehicle_id bigint [not null, ref: > vehicles.user_vehicles.vehicle_id]
   // This enforces 1 mechanic per request. It is nullable because
   // when a client first sends a request, no mechanic has accepted it yet.
-  specialist_id integer [ref: > entities.service_provider.provider_id]
-  request_status_id integer [not null, ref: - requests.request_status_def.request_status_id]
+  provider_id bigint [ref: > entities.service_provider.provider_id]
+  request_status_id bigint [not null, ref: - requests.request_status_def.request_status_id]
   requested_at timestamp
-  accepted_at timestamp
+//   accepted_at timestamp
   completed_at timestamp
   incident_location geometry
   // payment_id integer [ref: - payment.payment_id]
   indexes {
     client_id
-    specialist_id
+    provider_id
     request_status_id
     // payment_id
   }
@@ -163,19 +163,19 @@ Table requests.review_scale_def {
 }
 
 Table requests.review {
-  review_id integer [increment, primary key]
-  order_id interger [not null, ref: - requests.service_requests.request_id]
+  review_id bigint [increment, primary key]
+  request_id bigint [not null, ref: - requests.service_requests.request_id]
   review_scale_id integer [not null, ref: - requests.review_scale_def.review_scale_id]
   indexes {
-    order_id
+    request_id
     review_scale_id
     }
   }
 
   // All media (photos, videos, PDFs) for a request go here
 Table requests.request_attachments {
-  attachment_id integer [increment, primary key]
-  request_id integer [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple attachments per request']
+  attachment_id bigint [increment, primary key]
+  request_id bigint [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple attachments per request']
   file_url varchar [not null, note: 'S3/Cloud storage path']
   attachment_type varchar [not null, note: 'image, video, or document']
   uploaded_at timestamp [default: `now()`]
@@ -187,8 +187,8 @@ Table requests.request_attachments {
 
 // All OBD fault codes submitted for a request go here
 Table requests.request_obd_codes {
-  id integer [increment, primary key]
-  request_id integer [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple OBD codes per request']
+  id bigint [increment, primary key]
+  request_id bigint [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple OBD codes per request']
   obd_code varchar [not null, note: 'e.g., P0420, P0301']
 
   indexes {
@@ -202,14 +202,22 @@ Table requests.vehicle_symptoms {
   // OIL_LEAK; EXCESSIVE_SMOKE; OTHER
   symptom_code varchar
   symptom_desc varchar
-  request_id integer [not null, ref: > requests.service_requests.request_id]
+  request_id bigint [not null, ref: > requests.service_requests.request_id]
 indexes {
       (symptom_code, request_id) [pk] // composite primary key
     }
 }
 
-//QUOTE/ESTIMATES TABLE TBD
-
+Table requests.quote{
+  quote_id bigint [increment, pk]
+  request_id bigint [not null, ref: - requests.service_requests.request_id]
+  quote_state varchar [not null, note: "QUOTED;ACCEPTED;REJECTED"]
+  accepted_at timestamp
+  quote_amount number
+  indexes {
+    request_id
+  }
+}
 /* =========================================
    PHASE 2: PAYMENTS & INVOICES (DEFERRED)
    =========================================
