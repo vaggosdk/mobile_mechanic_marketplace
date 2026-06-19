@@ -9,7 +9,7 @@ Table entities.user {
   role varchar
   registration_date timestamp
   checks {
-    `role in (Admin, Verified User, Not Verified User)` [name: 'chk_user_role']
+    `role in ('ADMIN', 'VERIFIED_USER', 'NOT_VERIFIED_USER')` [name: 'chk_user_role']
   }
   indexes {
     username
@@ -29,7 +29,7 @@ Table entities.person {
   user_id bigint [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp
   checks {
-    `sex IN (M,F,N)` [name: 'chk_gender_values']
+    `sex IN ('M','F','N')` [name: 'chk_gender_values']
   }
   indexes {
     user_id
@@ -52,7 +52,7 @@ Table entities.company {
 
 Table entities.client {
   client_id bigint [increment, primary key]
-  entity_type varchar [note: 'Legal entity/Person']
+  entity_type varchar [note: "'LEGAL_ENTITY','PERSON'"]
   person_id bigint [ref: - entities.person.person_id]
   company_id bigint [ref: - entities.company.company_id]
   registration_date timestamp
@@ -68,7 +68,7 @@ Table entities.client {
 
 Table vehicles.vehicle_catalog {
   catalog_id integer [increment, primary key]
-  vehicle_type varchar [note: 'Car/Motorcycle']
+  vehicle_type varchar [note: "'CAR','MOTORCYCLE'"]
   brand_name varchar
   model_name varchar
   model_year integer
@@ -86,7 +86,7 @@ Table vehicles.user_vehicles {
   license_plate varchar [not null]
   color varchar [not null]
   notes varchar
-  Registration_date timestamp
+  registration_date timestamp
   indexes {
     (client_id,catalog_id,license_plate) [unique]
     client_id
@@ -145,7 +145,7 @@ Table requests.service_requests {
   provider_id bigint [ref: > entities.service_provider.provider_id]
   request_status_id bigint [not null, ref: - requests.request_status_def.request_status_id]
   requested_at timestamp
-//   accepted_at timestamp
+  provider_accepted_at timestamp
   completed_at timestamp
   incident_location geometry
   // payment_id integer [ref: - payment.payment_id]
@@ -196,13 +196,18 @@ Table requests.request_obd_codes {
   }
 }
 
-Table requests.vehicle_symptoms {
+Table requests.vehicle_symptom_def {
   // CHECK_ENGINE_LIGHT; STRANGE_NOISE; BATTERY_ISSUE
   // FLAT_TIRE; NO_START; OVERHEATING; BRAKE_PROBLEM
   // OIL_LEAK; EXCESSIVE_SMOKE; OTHER
-  symptom_code varchar
+  symptom_code varchar [primary key]
   symptom_desc varchar
+}
+
+Table requests.request_vehicle_symptom {
+  symptom_code varchar [ref: - requests.vehicle_symptom_def.symptom_code]
   request_id bigint [not null, ref: > requests.service_requests.request_id]
+  custom_symptom_description varchar [note: 'Used when symptom_code is OTHER, or for extra request-specific details']
 indexes {
       (symptom_code, request_id) [pk] // composite primary key
     }
@@ -211,11 +216,14 @@ indexes {
 Table requests.quote{
   quote_id bigint [increment, pk]
   request_id bigint [not null, ref: - requests.service_requests.request_id]
-  quote_state varchar [not null, note: "QUOTED;ACCEPTED;REJECTED"]
-  accepted_at timestamp
+  quote_state varchar [not null, note: "'QUOTED','ACCEPTED','REJECTED'"]
+  client_accepted_at timestamp
   quote_amount number
   indexes {
     request_id
+  }
+  checks {
+    `quote_state in ('QUOTED','ACCEPTED','REJECTED')`
   }
 }
 /* =========================================
