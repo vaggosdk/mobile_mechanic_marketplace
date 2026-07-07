@@ -1,4 +1,4 @@
-package test.java.com.mbl_mechanic_marketplace.demo;
+package com.mbl_mechanic_marketplace.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
