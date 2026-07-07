@@ -1,4 +1,4 @@
-package main.java.com.mbl_mechanic_marketplace.demo;
+package com.mbl_mechanic_marketplace.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
