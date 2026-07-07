@@ -1,3 +1,7 @@
 spring:
   application:
     name: mobile_mechanic_marketplace
+  docker:
+    compose:
+      skip:
+        in-test: true
