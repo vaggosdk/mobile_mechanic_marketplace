@@ -2,7 +2,7 @@
 // Docs: https://dbml.dbdiagram.io/docs
 
 Table entities.user {
-  user_id bigint [primary key]
+  user_id bigint [increment, primary key]
   username varchar [unique] //we don't do this pk, so the user is able to change it
   email varchar [unique]
   password varchar //this would be a hashed string

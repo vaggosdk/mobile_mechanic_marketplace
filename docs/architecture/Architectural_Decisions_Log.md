@@ -11,7 +11,7 @@ To achieve the primary goal of building a robust, backend-first MVP, the followi
 * **Language & Runtime:** Java (LTS)
 * **Application Framework:** Spring Boot (Spring Data JPA, Spring Security, Spring Web)
 * **Primary Database:** PostgreSQL (with PostGIS extension enabled)
-* **Database Migration & Versioning:** Liquibase
+* **Database Migration & Versioning:** Liquibase (schema managed exclusively through version-controlled migrations)
 * **Local Development Environment:** Containerized via Docker / Docker Compose
 
 ### Design & Modeling Tools
@@ -98,3 +98,27 @@ To achieve the primary goal of building a robust, backend-first MVP, the followi
     * **Pros:** `hibernate-spatial` automatically configures the database dialect to support geometric types. It bridges the gap between PostGIS and the industry-standard **JTS (Java Topology Suite)** library, allowing us to define coordinates in our Java entities using the native `org.locationtech.jts.geom.Point` class.
     * **Cons:** Introduces the performance and footprint overhead inherent to Hibernate (e.g., entity state tracking, risk of N+1 select query issues if relationships aren't fetched carefully).
     * **Cons:** Requires explicit alignment between the database coordinate system spatial reference identifiers (SRID 4326) and the geometry factories instantiated in Java helper utility code.
+
+---
+
+ADR 8: Database Schema Managed via Liquibase Instead of Hibernate DDL
+
+* **Status:** Approved
+* **Context:** The application requires a deterministic and version-controlled database schema that remains identical
+  across all development, testing, and production environments. While Spring Boot and Hibernate can automatically
+  generate database objects from JPA entities (ddl-auto), that approach provides limited control over database-specific
+  features such as sequences, PostGIS geometry types, indexes, custom constraints, partial indexes, and future database
+  optimizations.
+* **Decision:** The complete database schema will be managed exclusively through Liquibase migration scripts. Schemas,
+  tables, sequences, indexes, constraints, extensions (such as PostGIS), and future database objects will be created and
+  versioned through explicit SQL migration files. Hibernate will be configured only to validate the schema (
+  spring.jpa.hibernate.ddl-auto=validate) rather than generate or modify it.
+* **Consequences:**
+  * **Pros:** Ensures every environment shares an identical, reproducible database structure under source control.
+  * **Pros:** Enables full use of PostgreSQL-specific capabilities such as sequences, GiST indexes, PostGIS spatial
+    types, generated columns, partial indexes, triggers, and advanced constraints.
+  * **Pros:** Database evolution becomes incremental, auditable, and reversible through Liquibase change sets.
+  * **Pros:** Decouples persistence model evolution from database migration strategy, allowing entity classes and schema
+    migrations to evolve independently.
+  * **Cons:** Requires writing and maintaining SQL migration scripts in addition to JPA entity mappings.
+  * **Cons:** Developers must ensure entity definitions remain synchronized with the Liquibase-managed schema.
