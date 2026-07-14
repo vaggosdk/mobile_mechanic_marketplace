@@ -24,8 +24,8 @@ Table entities.person {
   middle_name varchar
   last_name varchar
   birth_date date
-  sex varchar(255) [note: 'M/F/N']
-  tax_id varchar(255) [unique]
+  sex varchar [note: 'M/F/N']
+  tax_id varchar [unique]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   checks {
@@ -207,7 +207,7 @@ Table requests.vehicle_symptom_def {
 Table requests.request_vehicle_symptom {
   symptom_code varchar(255) [ref: - requests.vehicle_symptom_def.symptom_code]
   request_id bigint [not null, ref: > requests.service_requests.request_id]
-  custom_symptom_description varchar(255) [note: 'Used when symptom_code is OTHER, or for extra request-specific details']
+  custom_symptom_description varchar [note: 'Used when symptom_code is OTHER, or for extra request-specific details']
 indexes {
       (symptom_code, request_id) [pk] // composite primary key
     }
@@ -216,7 +216,7 @@ indexes {
 Table requests.quote{
   quote_id bigint [increment, pk]
   request_id bigint [not null, ref: - requests.service_requests.request_id]
-  quote_state varchar(255) [not null, note: "'QUOTED','ACCEPTED','REJECTED'"]
+  quote_state varchar [not null, note: "'QUOTED','ACCEPTED','REJECTED'"]
   client_accepted_at timestamp
   quote_amount number
   indexes {
