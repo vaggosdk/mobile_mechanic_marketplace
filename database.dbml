@@ -7,7 +7,7 @@ Table entities.user {
   email varchar [unique]
   password varchar //this would be a hashed string
   role varchar
-  registration_date timestamp
+  registration_date timestamp [default: `now()`]
   checks {
     `role in ('ADMIN', 'VERIFIED_USER', 'NOT_VERIFIED_USER')` [name: 'chk_user_role']
   }
@@ -27,7 +27,7 @@ Table entities.person {
   sex varchar [note: 'M/F/N']
   tax_id varchar [unique]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
-  registration_date timestamp
+  registration_date timestamp [default: `now()`]
   checks {
     `sex IN ('M','F','N')` [name: 'chk_gender_values']
   }
@@ -43,7 +43,7 @@ Table entities.company {
   contact_person_id bigint [not null, ref: - entities.person.person_id]
   tax_id varchar [unique, not null]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
-  registration_date timestamp
+  registration_date timestamp [default: `now()`]
   indexes {
     user_id
     tax_id
@@ -55,7 +55,7 @@ Table entities.client {
   entity_type varchar [note: "'LEGAL_ENTITY','PERSON'"]
   person_id bigint [ref: - entities.person.person_id]
   company_id bigint [ref: - entities.company.company_id]
-  registration_date timestamp
+  registration_date timestamp [default: `now()`]
   checks {
     `(person_id IS NOT NULL AND company_id IS NULL) OR (company_id IS NOT NULL AND person_id IS NULL)` [name: 'chk_entity_exists_client']
   }
@@ -86,7 +86,7 @@ Table vehicles.user_vehicles {
   license_plate varchar [not null]
   color varchar [not null]
   notes varchar
-  registration_date timestamp
+  registration_date timestamp [default: `now()`]
   indexes {
     (client_id,catalog_id,license_plate) [unique]
     client_id
