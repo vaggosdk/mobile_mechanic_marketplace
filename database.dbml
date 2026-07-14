@@ -3,18 +3,18 @@
 
 Table entities.user {
   user_id bigint [increment, primary key]
-  username varchar [unique] //we don't do this pk, so the user is able to change it
-  email varchar [unique]
-  password varchar //this would be a hashed string
-  role varchar
-  registration_date timestamp [default: `now()`]
+  username varchar(100) [not null, unique] //we don't do this pk, so the user is able to change it
+  email varchar(255) [not null, unique]
+  password varchar(512) [not null] //this would be a hashed string (bcrypt/Argon2)
+  role varchar(50) [not null]
+  registration_date timestamp [not null, default: `CURRENT_TIMESTAMP`]
   checks {
     `role in ('ADMIN', 'VERIFIED_USER', 'NOT_VERIFIED_USER')` [name: 'chk_user_role']
   }
   indexes {
-    username
-    email
-    role
+    (username) [name: 'idx_user_username']
+    (email) [name: 'idx_user_email']
+    (role) [name: 'idx_user_role']
   }
 }
 
@@ -27,7 +27,7 @@ Table entities.person {
   sex varchar [note: 'M/F/N']
   tax_id varchar [unique]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
-  registration_date timestamp [default: `now()`]
+  registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   checks {
     `sex IN ('M','F','N')` [name: 'chk_gender_values']
   }
@@ -43,7 +43,7 @@ Table entities.company {
   contact_person_id bigint [not null, ref: - entities.person.person_id]
   tax_id varchar [unique, not null]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
-  registration_date timestamp [default: `now()`]
+  registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   indexes {
     user_id
     tax_id
@@ -55,7 +55,7 @@ Table entities.client {
   entity_type varchar [note: "'LEGAL_ENTITY','PERSON'"]
   person_id bigint [ref: - entities.person.person_id]
   company_id bigint [ref: - entities.company.company_id]
-  registration_date timestamp [default: `now()`]
+  registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   checks {
     `(person_id IS NOT NULL AND company_id IS NULL) OR (company_id IS NOT NULL AND person_id IS NULL)` [name: 'chk_entity_exists_client']
   }
@@ -86,7 +86,7 @@ Table vehicles.user_vehicles {
   license_plate varchar [not null]
   color varchar [not null]
   notes varchar
-  registration_date timestamp [default: `now()`]
+  registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   indexes {
     (client_id,catalog_id,license_plate) [unique]
     client_id
@@ -178,7 +178,7 @@ Table requests.request_attachments {
   request_id bigint [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple attachments per request']
   file_url varchar [not null, note: 'S3/Cloud storage path']
   attachment_type varchar [not null, note: 'image, video, or document']
-  uploaded_at timestamp [default: `now()`]
+  uploaded_at timestamp [default: `CURRENT_TIMESTAMP`]
 
   indexes {
     request_id
