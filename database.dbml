@@ -24,8 +24,8 @@ Table entities.person {
   middle_name varchar
   last_name varchar
   birth_date date
-  sex varchar [note: 'M/F/N']
-  tax_id varchar [unique]
+  sex varchar(255) [note: 'M/F/N']
+  tax_id varchar(255) [unique]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   checks {
@@ -41,7 +41,7 @@ Table entities.company {
   company_id bigint [increment, primary key]
   company_name varchar
   contact_person_id bigint [not null, ref: - entities.person.person_id]
-  tax_id varchar [unique, not null]
+  tax_id varchar(255) [unique, not null]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   indexes {
@@ -52,7 +52,7 @@ Table entities.company {
 
 Table entities.client {
   client_id bigint [increment, primary key]
-  entity_type varchar [note: "'LEGAL_ENTITY','PERSON'"]
+  entity_type varchar(255) [note: "'LEGAL_ENTITY','PERSON'"]
   person_id bigint [ref: - entities.person.person_id]
   company_id bigint [ref: - entities.company.company_id]
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
@@ -68,7 +68,7 @@ Table entities.client {
 
 Table vehicles.vehicle_catalog {
   catalog_id integer [increment, primary key]
-  vehicle_type varchar [note: "'CAR','MOTORCYCLE'"]
+  vehicle_type varchar(255) [note: "'CAR','MOTORCYCLE'"]
   brand_name varchar
   model_name varchar
   model_year integer
@@ -83,8 +83,8 @@ Table vehicles.user_vehicles {
   vehicle_id bigint [increment, primary key]
   client_id bigint [not null, ref: > entities.client.client_id]
   catalog_id integer [not null, ref: - vehicles.vehicle_catalog.catalog_id]
-  license_plate varchar [not null]
-  color varchar [not null]
+  license_plate varchar(255) [not null]
+  color varchar(255) [not null]
   notes varchar
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   indexes {
@@ -132,7 +132,7 @@ Table entities.provider_skill {
 
 Table requests.request_status_def {
   request_status_id bigint [primary key]
-  request_status_name varchar [not null, note: 'Pending, Accepted, Completed, Cancelled, Expired']
+  request_status_name varchar(255) [not null, note: 'Pending, Accepted, Completed, Cancelled, Expired']
   // possible extra statuses: quoted/quoteAcceptedByClient/providerOnTheirWay/Completed/Cancelled
 }
 
@@ -176,8 +176,8 @@ Table requests.review {
 Table requests.request_attachments {
   attachment_id bigint [increment, primary key]
   request_id bigint [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple attachments per request']
-  file_url varchar [not null, note: 'S3/Cloud storage path']
-  attachment_type varchar [not null, note: 'image, video, or document']
+  file_url varchar(255) [not null, note: 'S3/Cloud storage path']
+  attachment_type varchar(255) [not null, note: 'image, video, or document']
   uploaded_at timestamp [default: `CURRENT_TIMESTAMP`]
 
   indexes {
@@ -189,7 +189,7 @@ Table requests.request_attachments {
 Table requests.request_obd_codes {
   id bigint [increment, primary key]
   request_id bigint [not null, ref: > requests.service_requests.request_id, note: 'Allows multiple OBD codes per request']
-  obd_code varchar [not null, note: 'e.g., P0420, P0301']
+  obd_code varchar(255) [not null, note: 'e.g., P0420, P0301']
 
   indexes {
     request_id
@@ -200,14 +200,14 @@ Table requests.vehicle_symptom_def {
   // CHECK_ENGINE_LIGHT; STRANGE_NOISE; BATTERY_ISSUE
   // FLAT_TIRE; NO_START; OVERHEATING; BRAKE_PROBLEM
   // OIL_LEAK; EXCESSIVE_SMOKE; OTHER
-  symptom_code varchar [primary key]
+  symptom_code varchar(255) [primary key]
   symptom_desc varchar
 }
 
 Table requests.request_vehicle_symptom {
-  symptom_code varchar [ref: - requests.vehicle_symptom_def.symptom_code]
+  symptom_code varchar(255) [ref: - requests.vehicle_symptom_def.symptom_code]
   request_id bigint [not null, ref: > requests.service_requests.request_id]
-  custom_symptom_description varchar [note: 'Used when symptom_code is OTHER, or for extra request-specific details']
+  custom_symptom_description varchar(255) [note: 'Used when symptom_code is OTHER, or for extra request-specific details']
 indexes {
       (symptom_code, request_id) [pk] // composite primary key
     }
@@ -216,7 +216,7 @@ indexes {
 Table requests.quote{
   quote_id bigint [increment, pk]
   request_id bigint [not null, ref: - requests.service_requests.request_id]
-  quote_state varchar [not null, note: "'QUOTED','ACCEPTED','REJECTED'"]
+  quote_state varchar(255) [not null, note: "'QUOTED','ACCEPTED','REJECTED'"]
   client_accepted_at timestamp
   quote_amount number
   indexes {
