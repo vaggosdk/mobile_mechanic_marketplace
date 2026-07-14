@@ -3,7 +3,7 @@
 
 Table entities.user {
   user_id bigint [increment, primary key]
-  username varchar(100) [not null, unique] //we don't do this pk, so the user is able to change it
+  username varchar(255) [not null, unique] //we don't do this pk, so the user is able to change it
   email varchar(255) [not null, unique]
   password varchar(512) [not null] //this would be a hashed string (bcrypt/Argon2)
   role varchar(50) [not null]
