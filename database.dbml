@@ -20,12 +20,12 @@ Table entities.user {
 
 Table entities.person {
   person_id bigint [increment, primary key]
-  first_name varchar
-  middle_name varchar
-  last_name varchar
+  first_name varchar(255)
+  middle_name varchar(255)
+  last_name varchar(255)
   birth_date date
   sex varchar [note: 'M/F/N']
-  tax_id varchar [unique]
+  tax_id varchar(255) [unique]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   checks {
@@ -39,7 +39,7 @@ Table entities.person {
 
 Table entities.company {
   company_id bigint [increment, primary key]
-  company_name varchar
+  company_name varchar(255)
   contact_person_id bigint [not null, ref: - entities.person.person_id]
   tax_id varchar(255) [unique, not null]
   user_id bigint [unique, not null, ref: - entities.user.user_id]
@@ -69,8 +69,8 @@ Table entities.client {
 Table vehicles.vehicle_catalog {
   catalog_id integer [increment, primary key]
   vehicle_type varchar(255) [note: "'CAR','MOTORCYCLE'"]
-  brand_name varchar
-  model_name varchar
+  brand_name varchar(255)
+  model_name varchar(255)
   model_year integer
   indexes {
     brand_name
@@ -85,7 +85,7 @@ Table vehicles.user_vehicles {
   catalog_id integer [not null, ref: - vehicles.vehicle_catalog.catalog_id]
   license_plate varchar(255) [not null]
   color varchar(255) [not null]
-  notes varchar
+  notes varchar(255)
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   indexes {
     (client_id,catalog_id,license_plate) [unique]
@@ -95,13 +95,13 @@ Table vehicles.user_vehicles {
 
 Table entities.profession {
   profession_id integer [increment, primary key]
-  profession_name varchar
-  description varchar
+  profession_name varchar(255)
+  description varchar(255)
 }
 
 Table entities.skill   {
   skill_id integer [increment, primary key]
-  skill_name varchar
+  skill_name varchar(255)
 }
 
 Table entities.service_provider {
@@ -159,7 +159,7 @@ Table requests.service_requests {
 
 Table requests.review_scale_def {
   review_scale_id integer [primary key]
-  description varchar
+  description varchar(255)
 }
 
 Table requests.review {
@@ -201,13 +201,13 @@ Table requests.vehicle_symptom_def {
   // FLAT_TIRE; NO_START; OVERHEATING; BRAKE_PROBLEM
   // OIL_LEAK; EXCESSIVE_SMOKE; OTHER
   symptom_code varchar(255) [primary key]
-  symptom_desc varchar
+  symptom_desc varchar(255)
 }
 
 Table requests.request_vehicle_symptom {
   symptom_code varchar(255) [ref: - requests.vehicle_symptom_def.symptom_code]
   request_id bigint [not null, ref: > requests.service_requests.request_id]
-  custom_symptom_description varchar [note: 'Used when symptom_code is OTHER, or for extra request-specific details']
+  custom_symptom_description varchar(255) [note: 'Used when symptom_code is OTHER, or for extra request-specific details']
 indexes {
       (symptom_code, request_id) [pk] // composite primary key
     }
@@ -216,7 +216,7 @@ indexes {
 Table requests.quote{
   quote_id bigint [increment, pk]
   request_id bigint [not null, ref: - requests.service_requests.request_id]
-  quote_state varchar [not null, note: "'QUOTED','ACCEPTED','REJECTED'"]
+  quote_state varchar(255) [not null, note: "'QUOTED','ACCEPTED','REJECTED'"]
   client_accepted_at timestamp
   quote_amount number
   indexes {

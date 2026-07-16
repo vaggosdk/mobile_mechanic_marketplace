@@ -14,5 +14,7 @@
     <include file="../sql/007-create-profession-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/008-create-skill-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/009-create-service-provider-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/010-create-provider-skill-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/011-create-vehicle-catalog-tbl.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
