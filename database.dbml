@@ -85,7 +85,7 @@ Table vehicles.user_vehicles {
   catalog_id integer [not null, ref: - vehicles.vehicle_catalog.catalog_id]
   license_plate varchar(255) [not null]
   color varchar(255) [not null]
-  notes varchar(255)
+  notes varchar(4000)
   registration_date timestamp [default: `CURRENT_TIMESTAMP`]
   indexes {
     (client_id,catalog_id,license_plate) [unique]

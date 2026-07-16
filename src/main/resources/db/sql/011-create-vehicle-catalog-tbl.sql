@@ -12,4 +12,4 @@ CREATE TABLE "vehicles"."vehicle_catalog"
 );
 
 COMMENT
-ON TABLE "vehicles"."vehicle_catalog" IS 'This is the table that will hold the vehicles as a look up table.' ;
+ON TABLE "vehicles"."vehicle_catalog" IS 'This is the table that will hold the vehicles as a lookup table.' ;
