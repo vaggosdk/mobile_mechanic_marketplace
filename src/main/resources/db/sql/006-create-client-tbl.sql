@@ -19,3 +19,6 @@ CREATE TABLE "entities"."client"
 
 COMMENT
 ON TABLE "entities"."client" IS 'This is the table that will hold the clients'' information. We check if the entity exists, so not orphan clients can be added.' ;
+
+COMMENT
+ON COLUMN "entities"."client"."entity_type" IS '''LEGAL_ENTITY'',''PERSON''';

@@ -13,3 +13,6 @@ CREATE TABLE "vehicles"."vehicle_catalog"
 
 COMMENT
 ON TABLE "vehicles"."vehicle_catalog" IS 'This is the table that will hold the vehicles as a lookup table.' ;
+
+COMMENT
+ON COLUMN "vehicles"."vehicle_catalog"."vehicle_type" IS '''CAR'',''MOTORCYCLE''';

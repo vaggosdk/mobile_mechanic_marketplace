@@ -19,3 +19,6 @@ CREATE TABLE "entities"."person"
 
 COMMENT
 ON TABLE "entities"."person" IS 'This is the table that will hold the people''s information' ;
+
+COMMENT
+ON COLUMN "entities"."person"."sex" IS 'M/F/N';
