@@ -12,5 +12,7 @@
     <include file="../sql/005-create-company-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/006-create-client-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/007-create-profession-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/008-create-skill-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/009-create-service-provider-tbl.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
