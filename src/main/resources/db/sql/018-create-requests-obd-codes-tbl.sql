@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset vstavrou:018-create-requests_obd_codes-tbl
+--changeset vstavrou:018-create-requests-obd-codes-tbl
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'requests' AND table_name = 'request_obd_codes';
 CREATE TABLE "requests"."request_obd_codes"

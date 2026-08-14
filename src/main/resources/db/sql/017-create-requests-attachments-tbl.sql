@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset vstavrou:017-create-requests_attachments-tbl
+--changeset vstavrou:017-create-requests-attachments-tbl
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'requests' AND table_name = 'request_attachments';
 CREATE TABLE "requests"."request_attachments"

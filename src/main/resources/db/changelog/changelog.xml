@@ -21,6 +21,6 @@
     <include file="../sql/014-create-service-requests-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/015-create-review-scale-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/016-create-review-tbl.sql" relativeToChangelogFile="true"/>
-    <include file="../sql/017-create-requests_attachments-tbl.sql" relativeToChangelogFile="true"/>
-    <include file="../sql/018-create-requests_obd_codes-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/017-create-requests-attachments-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/018-create-requests-obd-codes-tbl.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
