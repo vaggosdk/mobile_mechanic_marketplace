@@ -10,5 +10,4 @@ CREATE TABLE "requests"."vehicle_symptom_def"
 
 
 COMMENT
-ON TABLE "requests"."request_status_def" IS 'This is the table that will act as lookup table for several vehicle symptoms.' ||
-                                            'There will also be a code OTHER, so users can choose other that existing codes.' ;
+ON TABLE "requests"."request_status_def" IS 'This is the table that will act as lookup table for several vehicle symptoms. There will also be a code OTHER, so users can choose other that existing codes.' ;
