@@ -8,7 +8,7 @@ CREATE TABLE "requests"."quote"
     "request_id"         bigint       NOT NULL,
     "quote_state"        varchar(255) NOT NULL,
     "client_accepted_at" timestamp,
-    "quote_amount"       number,
+    "quote_amount" NUMERIC(10, 2),
     CHECK (quote_state in ('QUOTED', 'ACCEPTED', 'REJECTED'))
 );
 
