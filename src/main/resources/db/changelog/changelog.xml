@@ -25,4 +25,5 @@
     <include file="../sql/018-create-requests-obd-codes-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/019-create-vehicle-symptom-def-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/020-create-vehicle_symptoms-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/021-create-quote-tbl.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
