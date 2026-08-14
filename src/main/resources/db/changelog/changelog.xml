@@ -19,5 +19,7 @@
     <include file="../sql/012-create-user-vehicles-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/013-create-request-status-def-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/014-create-service-requests-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/015-create-review-scale-tbl.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/016-create-review-tbl.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
