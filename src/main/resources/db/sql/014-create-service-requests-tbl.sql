@@ -17,3 +17,7 @@ CREATE TABLE "requests"."service_requests"
 
 COMMENT
 ON TABLE "requests"."service_requests" IS 'This is the table that will hold the service requests.' ;
+
+CREATE INDEX ON "requests"."service_requests" ("client_id");
+CREATE INDEX ON "requests"."service_requests" ("provider_id");
+CREATE INDEX ON "requests"."service_requests" ("request_status_id");
