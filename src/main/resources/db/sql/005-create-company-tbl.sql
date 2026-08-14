@@ -15,3 +15,6 @@ CREATE TABLE "entities"."company"
 
 COMMENT
 ON TABLE "entities"."company" IS 'This is the table that will hold the companies'' information' ;
+
+CREATE INDEX ON "entities"."company" ("user_id");
+CREATE INDEX ON "entities"."company" ("tax_id");

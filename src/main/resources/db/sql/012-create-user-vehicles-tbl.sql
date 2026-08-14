@@ -15,3 +15,6 @@ CREATE TABLE "vehicles"."user_vehicles"
 
 COMMENT
 ON TABLE "vehicles"."user_vehicles" IS 'This is the table that will hold the users'' vehicles using the lookup table.' ;
+
+CREATE UNIQUE INDEX ON "vehicles"."user_vehicles" ("client_id", "catalog_id", "license_plate");
+CREATE INDEX ON "vehicles"."user_vehicles" ("client_id");

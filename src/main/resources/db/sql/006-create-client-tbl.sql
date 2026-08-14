@@ -22,3 +22,7 @@ ON TABLE "entities"."client" IS 'This is the table that will hold the clients'' 
 
 COMMENT
 ON COLUMN "entities"."client"."entity_type" IS '''LEGAL_ENTITY'',''PERSON''';
+
+CREATE INDEX ON "entities"."client" ("entity_type");
+CREATE INDEX ON "entities"."client" ("company_id");
+CREATE INDEX ON "entities"."client" ("person_id");

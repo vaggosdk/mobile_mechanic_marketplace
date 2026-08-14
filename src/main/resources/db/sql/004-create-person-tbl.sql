@@ -22,3 +22,7 @@ ON TABLE "entities"."person" IS 'This is the table that will hold the people''s 
 
 COMMENT
 ON COLUMN "entities"."person"."sex" IS 'M/F/N';
+
+
+CREATE INDEX ON "entities"."person" ("user_id");
+CREATE INDEX ON "entities"."person" ("tax_id");

@@ -20,3 +20,5 @@ CREATE TABLE "entities"."service_provider"
 
 COMMENT
 ON TABLE "entities"."service_provider" IS 'This is the table that will hold the service providers'' information. We check if the entity exists, so not orphan service providers can be added.' ;
+
+CREATE INDEX ON "entities"."service_provider" ("profession_id");

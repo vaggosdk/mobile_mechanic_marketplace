@@ -16,3 +16,7 @@ ON TABLE "vehicles"."vehicle_catalog" IS 'This is the table that will hold the v
 
 COMMENT
 ON COLUMN "vehicles"."vehicle_catalog"."vehicle_type" IS '''CAR'',''MOTORCYCLE''';
+
+CREATE INDEX ON "vehicles"."vehicle_catalog" ("brand_name");
+CREATE INDEX ON "vehicles"."vehicle_catalog" ("model_name");
+CREATE INDEX ON "vehicles"."vehicle_catalog" ("vehicle_type", "brand_name");
