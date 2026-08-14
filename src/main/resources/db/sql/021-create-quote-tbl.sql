@@ -13,7 +13,7 @@ CREATE TABLE "requests"."quote"
 );
 
 COMMENT
-ON TABLE "requests"."quote" IS 'This table will hold the quotations a service provider quotes for a request.'
+ON TABLE "requests"."quote" IS 'This table will hold the quotations a service provider quotes for a request.';
 COMMENT
 ON COLUMN "requests"."quote"."quote_state" IS '''QUOTED'',''ACCEPTED'',''REJECTED''';
 

@@ -10,7 +10,7 @@ CREATE TABLE "requests"."request_obd_codes"
 );
 
 COMMENT
-ON TABLE "requests"."request_obd_codes" IS 'This table will hold the OBD codes related to the request.'
+ON TABLE "requests"."request_obd_codes" IS 'This table will hold the OBD codes related to the request.';
 COMMENT
 ON COLUMN "requests"."request_obd_codes"."request_id" IS 'Allows multiple OBD codes per request';
 COMMENT

@@ -11,6 +11,6 @@ CREATE TABLE "requests"."request_vehicle_symptom"
 );
 
 COMMENT
-ON TABLE "requests"."request_vehicle_symptom" IS 'Table to hold the vehicle symptoms of a request.'
+ON TABLE "requests"."request_vehicle_symptom" IS 'Table to hold the vehicle symptoms of a request.';
 COMMENT
 ON COLUMN "requests"."request_vehicle_symptom"."custom_symptom_description" IS 'Used when symptom_code is OTHER, or for extra request-specific details';

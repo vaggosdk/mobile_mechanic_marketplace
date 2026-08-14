@@ -13,7 +13,7 @@ CREATE TABLE "requests"."request_attachments"
 
 
 COMMENT
-ON TABLE "requests"."request_attachments" IS 'This table will hold the URLs of the attachments of the requests'
+ON TABLE "requests"."request_attachments" IS 'This table will hold the URLs of the attachments of the requests';
 COMMENT
 ON COLUMN "requests"."request_attachments"."request_id" IS 'Allows multiple attachments per request';
 COMMENT
