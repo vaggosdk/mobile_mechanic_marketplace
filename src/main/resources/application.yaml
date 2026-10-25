@@ -1,6 +1,10 @@
 spring:
   application:
     name: mobile_mechanic_marketplace
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5434/mydatabase}
+    username: ${SPRING_DATASOURCE_USERNAME:myuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:secret}
   docker:
     compose:
       skip:
@@ -8,3 +12,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog.xml
+  jpa:
+    hibernate:
+      ddl-auto: none
