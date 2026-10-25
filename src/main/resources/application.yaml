@@ -1,10 +1,12 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: mobile_mechanic_marketplace
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5434/mydatabase}
-    username: ${SPRING_DATASOURCE_USERNAME:myuser}
-    password: ${SPRING_DATASOURCE_PASSWORD:secret}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:${POSTGRES_HOST_PORT:5434}/${POSTGRES_DB:mydatabase}}
+    username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:myuser}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD:secret}}
   docker:
     compose:
       skip:
@@ -16,4 +18,4 @@ spring:
     hibernate:
       ddl-auto: none
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
