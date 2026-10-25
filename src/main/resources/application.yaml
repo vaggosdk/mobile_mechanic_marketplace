@@ -2,7 +2,7 @@ spring:
   application:
     name: mobile_mechanic_marketplace
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5434/mydatabase}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/mydatabase}
     username: ${SPRING_DATASOURCE_USERNAME:myuser}
     password: ${SPRING_DATASOURCE_PASSWORD:secret}
   docker:
