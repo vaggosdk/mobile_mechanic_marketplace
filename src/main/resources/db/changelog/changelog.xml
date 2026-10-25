@@ -7,6 +7,7 @@
     <include file="../sql/000-schema-creation-entities.sql" relativeToChangelogFile="true"/>
     <include file="../sql/001-schema-creation-vehicles.sql" relativeToChangelogFile="true"/>
     <include file="../sql/002-schema-creation-requests.sql" relativeToChangelogFile="true"/>
+    <include file="../sql/002a-enable-postgis.sql" relativeToChangelogFile="true"/>
     <include file="../sql/003-create-user-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/004-create-person-tbl.sql" relativeToChangelogFile="true"/>
     <include file="../sql/005-create-company-tbl.sql" relativeToChangelogFile="true"/>
