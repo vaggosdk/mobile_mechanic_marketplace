@@ -20,7 +20,7 @@ public @interface MinimumAge {
     int value();
 
     /** The validation message to report when the age requirement is not met. */
-    String message() default "The person must be at least 18 years old.";
+    String message() default "The person must be at least {value} years old.";
 
     /** Validation groups this constraint belongs to. */
     Class<?>[] groups() default {};
