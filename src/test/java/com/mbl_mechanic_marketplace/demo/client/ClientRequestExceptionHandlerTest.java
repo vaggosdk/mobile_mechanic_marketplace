@@ -32,7 +32,26 @@ class ClientRequestExceptionHandlerTest {
                 .andExpect(jsonPath("$.errors[?(@.field == 'person.lastName')].message")
                         .value(org.hamcrest.Matchers.hasItem("Last name is required for a person.")))
                 .andExpect(jsonPath("$.errors[?(@.field == 'person.birthDate')].message")
-                        .value(org.hamcrest.Matchers.hasItem("Birth date is required for a person.")));
+                        .value(org.hamcrest.Matchers.hasItem("Birthdate is required for a person.")));
+    }
+
+    @Test
+    void rejectsPersonUnderMinimumAgeOverHttp() throws Exception {
+        mockMvc.perform(post("/api/clients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "entityType": "PERSON",
+                                  "person": {
+                                    "firstName": "Alex",
+                                    "lastName": "Taylor",
+                                    "birthDate": "2020-01-01"
+                                  }
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[?(@.field == 'person.birthDate')].message")
+                        .value(org.hamcrest.Matchers.hasItem("The person must be at least 18 years old.")));
     }
 
     @Test
