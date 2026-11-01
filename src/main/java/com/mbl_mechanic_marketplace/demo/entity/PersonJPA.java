@@ -41,6 +41,6 @@ public class PersonJPA {
     @Column(name = "user_id", unique = true, nullable = false)
     private Long userId;
 
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", insertable = false, updatable = false)
     private LocalDateTime registrationDate;
 }

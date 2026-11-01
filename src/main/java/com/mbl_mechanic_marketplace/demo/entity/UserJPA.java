@@ -30,6 +30,6 @@ public class UserJPA {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "registration_date", nullable = false)
+    @Column(name = "registration_date", nullable = false, insertable = false, updatable = false)
     private LocalDateTime registrationDate;
 }
