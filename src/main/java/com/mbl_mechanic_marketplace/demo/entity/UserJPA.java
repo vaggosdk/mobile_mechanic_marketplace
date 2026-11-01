@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(schema = "entities", name = "user")
 public class UserJPA {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 

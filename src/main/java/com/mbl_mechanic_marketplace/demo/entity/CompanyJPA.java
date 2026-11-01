@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -13,7 +15,7 @@ import lombok.Setter;
 public class CompanyJPA {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "company_id")
     private Long companyId;
 
@@ -30,5 +32,5 @@ public class CompanyJPA {
     private Long userId;
 
     @Column(name = "registration_date")
-    private String registrationDate;
+    private LocalDateTime registrationDate;
 }
