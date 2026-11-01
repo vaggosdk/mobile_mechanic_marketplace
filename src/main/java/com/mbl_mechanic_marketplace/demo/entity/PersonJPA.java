@@ -38,7 +38,7 @@ public class PersonJPA {
     @Column(name = "tax_id", unique = true)
     private String taxId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", unique = true, nullable = false)
     private Long userId;
 
     @Column(name = "registration_date")
