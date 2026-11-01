@@ -27,6 +27,6 @@ public class ClientJPA {
     @Column(name = "company_id")
     private Long companyId;
 
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", insertable = false, updatable = false)
     private LocalDateTime registrationDate;
 }
