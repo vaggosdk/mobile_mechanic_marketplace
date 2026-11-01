@@ -35,10 +35,10 @@ public class PersonJPA {
     @Column(name = "sex")
     private String sex;
 
-    @Column(name = "tax_id")
+    @Column(name = "tax_id", unique = true)
     private String taxId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "registration_date")

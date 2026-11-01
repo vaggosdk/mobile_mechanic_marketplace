@@ -24,7 +24,7 @@ public class UserJPA {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 512)
     private String password;
 
     @Column(name = "role", nullable = false)

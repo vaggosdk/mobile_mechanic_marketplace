@@ -22,13 +22,13 @@ public class CompanyJPA {
     @Column(name = "company_name")
     private String companyName;
 
-    @Column(name = "contact_person_id")
+    @Column(name = "contact_person_id", nullable = false)
     private Long contactPersonId;
 
-    @Column(name = "tax_id")
+    @Column(name = "tax_id", unique = true, nullable = false)
     private String taxId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "registration_date")
